@@ -3,6 +3,7 @@ const express = require("express");
 const multer = require("multer");
 const cloudinary = require("cloudinary").v2;
 const mongoose = require("mongoose");
+const cors = require("cors");
 require("dotenv").config();
 require("./db");
 
@@ -17,6 +18,7 @@ const personModel = mongoose.model("person", personSchema, "person");
 const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(cors());
 
 //cloudinary configuration
 cloudinary.config({
@@ -38,7 +40,6 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage });
 
 app.post("/upload", upload.single("userfile"), async (req, res) => {
-
   //uploading image to cloudinary and creating url
   const uploadResult = await cloudinary.uploader
     .upload(req.file.path)

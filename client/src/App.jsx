@@ -1,21 +1,28 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import { useRef } from "react";
+import axios from "axios";
 import "./App.css";
 
 function App() {
   const nameRef = useRef();
   const surnameRef = useRef();
   const imageRef = useRef();
-  const handleFormSubmit = (e) => {
+  const handleFormSubmit = async (e) => {
     e.preventDefault();
 
-    const imageData = new FormData();
-    imageData.append("userfile", imageRef.current.files[0]);
+    const formData = new FormData();
+    formData.append("userfile", imageRef.current.files[0]);
+    formData.append("name", nameRef.current.value);
+    formData.append("surname", surnameRef.current.value);
 
-    
-    console.log(nameRef.current.value);
-    console.log(surnameRef.current.value);
-    console.log(imageRef.current.files[0]);
+    // This way of sending user info will not work
+    // const formData = {
+    //   name: nameRef.current.value,
+    //   surname: surnameRef.current.value,
+    //   userfile: imageRef.current.files[0],
+    // };
+    axios.post("http://localhost:5000/upload", formData);
+    console.log("data is sent");
   };
 
   return (
