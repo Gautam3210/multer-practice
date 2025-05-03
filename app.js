@@ -25,7 +25,7 @@ cloudinary.config({
   api_secret: process.env.API_SECRET, // Click 'View API Keys' above to copy your API secret
 });
 
-// for uploading image in database
+// for uploading image in database-----------
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -38,6 +38,7 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage });
 
 app.post("/upload", upload.single("userfile"), async (req, res) => {
+
   //uploading image to cloudinary and creating url
   const uploadResult = await cloudinary.uploader
     .upload(req.file.path)
@@ -58,7 +59,7 @@ app.post("/upload", upload.single("userfile"), async (req, res) => {
   const data = new personModel({
     name: req.body.name,
     surname: req.body.surname,
-    photoUrl: uploadResult.url,
+    photoUrl: uploadResult.url, // image url is being stored that above created
   });
   const result = await data.save();
   res.send("file uploaded in db");
