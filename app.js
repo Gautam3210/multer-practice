@@ -4,7 +4,7 @@ const multer = require("multer");
 const cloudinary = require("cloudinary").v2;
 const mongoose = require("mongoose");
 require("dotenv").config();
-require('./db')
+require("./db");
 
 // schema and model to store data in mongodb
 const personSchema = new mongoose.Schema({
@@ -12,12 +12,11 @@ const personSchema = new mongoose.Schema({
   surname: String,
   photoUrl: String,
 });
-const personModel = mongoose.model("person", personSchema);
+const personModel = mongoose.model("person", personSchema, "person");
 
 const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-
 
 //cloudinary configuration
 cloudinary.config({
@@ -25,8 +24,6 @@ cloudinary.config({
   api_key: process.env.API_KEY,
   api_secret: process.env.API_SECRET, // Click 'View API Keys' above to copy your API secret
 });
-
-
 
 // for uploading image in database
 
@@ -41,7 +38,6 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage });
 
 app.post("/upload", upload.single("userfile"), async (req, res) => {
-
   //uploading image to cloudinary and creating url
   const uploadResult = await cloudinary.uploader
     .upload(req.file.path)
@@ -49,7 +45,6 @@ app.post("/upload", upload.single("userfile"), async (req, res) => {
       res.send("error occured");
     });
 
-  
   // deleting image from folder called uploads
   fs.unlink(req.file.path, (err) => {
     if (err) {
