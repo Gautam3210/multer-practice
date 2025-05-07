@@ -1,10 +1,11 @@
 import "bootstrap/dist/css/bootstrap.min.css";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import axios from "axios";
 import "./App.css";
+import ImageCart from "./ImageCart";
 
 function App() {
-  const [image, setImage] = useState("");
+  const [image, setImage] = useState([]);
   const nameRef = useRef();
   const surnameRef = useRef();
   const imageRef = useRef();
@@ -26,61 +27,73 @@ function App() {
     console.log("data is sent");
   };
 
+  useEffect(() => {
+    const fetchData = async () => {
+      const imgData = await axios.get("http://localhost:5000/upload");
+      setImage(imgData.data);
+    };
+    fetchData();
+  }, [image]);
+
   return (
-    <div className="form-container">
-      <form
-        action="/upload"
-        method="post"
-        encType="multipart/form-data"
-        onSubmit={handleFormSubmit}
-      >
-        <div className="mb-3">
-          <label for="name" className="form-label">
-            Name
-          </label>
-          <input
-            type="text"
-            ref={nameRef}
-            name="name"
-            className="form-control"
-            id="name"
-          />
-        </div>
+    <>
+      <div className="form-container">
+        <form
+          action="/upload"
+          method="post"
+          encType="multipart/form-data"
+          onSubmit={handleFormSubmit}
+        >
+          <div className="mb-3">
+            <label for="name" className="form-label">
+              Name
+            </label>
+            <input
+              type="text"
+              ref={nameRef}
+              name="name"
+              className="form-control"
+              id="name"
+            />
+          </div>
 
-        <div className="mb-3">
-          <label for="surname" className="form-label">
-            surname
-          </label>
-          <input
-            type="text"
-            ref={surnameRef}
-            name="surname"
-            className="form-control"
-            id="surname"
-          />
-        </div>
+          <div className="mb-3">
+            <label for="surname" className="form-label">
+              surname
+            </label>
+            <input
+              type="text"
+              ref={surnameRef}
+              name="surname"
+              className="form-control"
+              id="surname"
+            />
+          </div>
 
-        <div className="mb-3">
-          <label for="image" className="form-label">
-            choose image
-          </label>
-          <input
-            type="file"
-            ref={imageRef}
-            name="userfile"
-            className="form-control"
-            id="image"
-          />
-        </div>
+          <div className="mb-3">
+            <label for="image" className="form-label">
+              choose image
+            </label>
+            <input
+              type="file"
+              ref={imageRef}
+              name="userfile"
+              className="form-control"
+              id="image"
+            />
+          </div>
 
-        <button type="submit" className="btn btn-primary">
-          Submit
-        </button>
-      </form>
-      <div>
-        <img src="" alt="" />
+          <button type="submit" className="btn btn-primary">
+            Submit
+          </button>
+        </form>
       </div>
-    </div>
+      <div className="imageCart">
+        {image.map((img) => (
+          <ImageCart images={img} />
+        ))}
+      </div>
+    </>
   );
 }
 

@@ -3,6 +3,7 @@ const express = require("express");
 const multer = require("multer");
 const cloudinary = require("cloudinary").v2;
 const mongoose = require("mongoose");
+const axios = require("axios");
 const cors = require("cors");
 require("dotenv").config();
 require("./db");
@@ -39,6 +40,7 @@ const storage = multer.diskStorage({
 });
 const upload = multer({ storage: storage });
 
+let currentResult;
 app.post("/upload", upload.single("userfile"), async (req, res) => {
   //uploading image to cloudinary and creating url
   const uploadResult = await cloudinary.uploader
@@ -62,9 +64,15 @@ app.post("/upload", upload.single("userfile"), async (req, res) => {
     surname: req.body.surname,
     photoUrl: uploadResult.url, // image url is being stored that above created
   });
-  const result = await data.save();
+
+  currentResult = await data.save();
   res.send("file uploaded in db");
-  console.log(result);
+  console.log(currentResult);
+});
+
+app.get("/upload", async (req, res) => {
+  const personData = await personModel.find({});
+  res.json(personData);
 });
 
 app.listen(5000);

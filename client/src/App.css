@@ -4,4 +4,14 @@
   align-items: center;
   margin: 2rem;
   height: 23rem;
+  /* flex-direction: column        ; */
+}
+
+.imageCart{
+  display: flex;
+      justify-content: center;
+      align-items: center;
+      box-sizing: border-box;
+      flex-direction: row;
+      gap: 1rem;
 }
