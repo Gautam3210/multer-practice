@@ -1,9 +1,10 @@
 import "bootstrap/dist/css/bootstrap.min.css";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import axios from "axios";
 import "./App.css";
 
 function App() {
+  const [image, setImage] = useState("");
   const nameRef = useRef();
   const surnameRef = useRef();
   const imageRef = useRef();
@@ -76,6 +77,9 @@ function App() {
           Submit
         </button>
       </form>
+      <div>
+        <img src="" alt="" />
+      </div>
     </div>
   );
 }
