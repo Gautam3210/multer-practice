@@ -2,6 +2,8 @@ const express = require("express");
 const cors = require("cors");
 const postRouter = require("./routes/uploadRoute");
 const getRouter = require("./routes/fetchRoute");
+const deleteRouter = require("./routes/deleteRoute");
+require("./db");
 
 
 const app = express();
@@ -14,7 +16,7 @@ app.use(cors());
 
 app.use(postRouter);
 app.use(getRouter);
-
+app.use(deleteRouter)
 app.listen(5000);
 
 

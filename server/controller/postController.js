@@ -2,7 +2,6 @@ const fs = require("fs");
 const cloudinary = require("cloudinary").v2;
 const personModel = require("../module/db_config");
 require("dotenv").config();
-require("../db");
 
 //cloudinary configuration
 cloudinary.config({
@@ -33,6 +32,7 @@ const postController = async (req, res) => {
     name: req.body.name,
     surname: req.body.surname,
     photoUrl: uploadResult.url, // image url is being stored that above created
+    cloudinaryId:uploadResult.public_id
   });
 
   const currentResult = await data.save();
